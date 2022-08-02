@@ -5,6 +5,7 @@ from django.db import models
 class Restaurant(models.Model):
     name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
+    menus = models.ManyToManyField("Menu", through="RestaurantMenu")
 
     class Meta:
         unique_together = ("name", "address")
