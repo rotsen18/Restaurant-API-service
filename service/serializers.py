@@ -1,8 +1,12 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator
 
 from service.models import (
     Restaurant,
-    Menu, RestaurantMenu, Dish
+    Menu,
+    RestaurantMenu,
+    Dish,
+    Vote
 )
 
 
@@ -47,3 +51,16 @@ class RestaurantMenuSerializer(serializers.ModelSerializer):
         model = RestaurantMenu
         fields = ("date", "menu")
 
+
+class VoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vote
+        fields = ("rate", )
+
+
+class RestaurantCurrentDayResultSerializer(serializers.Serializer):
+    restaurant = serializers.CharField()
+    rate_amount = serializers.IntegerField()
+    average_rate = serializers.FloatField()
+    date = serializers.DateField()
+    menu = MenuListSerializer(many=False)

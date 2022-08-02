@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 
@@ -39,9 +40,15 @@ class RestaurantMenu(models.Model):
 
 
 class Vote(models.Model):
+    """Each vote is assigned to one RestaurantMenu item"""
     restaurant_menu = models.ForeignKey(RestaurantMenu, on_delete=models.CASCADE, related_name="votes")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    rate = models.IntegerField()
+    rate = models.IntegerField(
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(5)
+        ]
+    )
 
     class Meta:
         unique_together = ("restaurant_menu", "user")
