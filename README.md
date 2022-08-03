@@ -44,13 +44,13 @@ All documentation in two different styles is located at:
 * /api/doc/swagger/
 * /api/doc/redoc/
 
-- create user at `/api/user/register/`
-- get access token on `/api/user/token/`
+- create employee at `/api/employee/create/`
+- get access token on `/api/employee/token/`
 - now every request should contain header:
 `Authorisation: Bearer <your access token>`
 
 for update access token you should post your refresh token at:
-`/api/user/token/refresh/`
+`/api/employee/token/refresh/`
 
 If you want to create admin user you should add superuser with command:
 ```shell
@@ -60,6 +60,7 @@ python manage.py createsuperuser
 ## Features
 
 * Adding restaurants
+* Creating employees
 * Each restaurant has day menu
 * Creating menu from dishes
 * Voting for day menu for each restaurant (rate from 1 to 5)
@@ -67,7 +68,7 @@ python manage.py createsuperuser
 
 ## Usage
 
-1.Create user and get token 
+1.Create user and get token `/api/employyes/create/` -> `/api/employee/token/`
 2.Create restaurant `POST /api/service/restaurant/`
 3.Create dishes `POST /api/service/dishes/`
 4.Create menu from dishes `POST /api/service/menus/`

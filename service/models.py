@@ -33,6 +33,7 @@ class RestaurantMenu(models.Model):
     date = models.DateField()
 
     class Meta:
+        """Restaurant has only one menu for each day"""
         unique_together = ("restaurant", "date")
 
     def __str__(self):
@@ -58,6 +59,7 @@ class Vote(models.Model):
     )
 
     class Meta:
+        """One user can vote for one menu in restaurant per one day"""
         unique_together = ("restaurant_menu", "user")
 
     def __str__(self):
