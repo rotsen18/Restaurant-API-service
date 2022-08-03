@@ -30,28 +30,29 @@ class AuthenticatedMenuApiTests(TestCase):
             "test12345"
         )
         self.client.force_authenticate(self.user)
+        self.restaurant = Restaurant.objects.create(
+            name="test restaurant name",
+            address="test address"
+        )
 
     def test_create_menu(self):
         dish_1 = Dish.objects.create(title="soup 1")
         dish_2 = Dish.objects.create(title="soup 2")
+
         payload = {
             "dishes": [dish_1.id, dish_2.id],
         }
-
         response = self.client.post(MENU_URL, payload)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data["dishes"], payload["dishes"])
 
     def test_upload_menu_for_restaurant(self):
-        restaurant = Restaurant.objects.create(
-            name="test restaurant name",
-            address="test address"
-        )
         dish = Dish.objects.create(title="soup 1")
         menu = Menu.objects.create()
         menu.dishes.add(dish)
-        url = reverse("service:set-current-menu", args=[restaurant.id])
+
+        url = reverse("service:set-current-menu", args=[self.restaurant.id])
         payload = {
             "date": datetime.datetime.now().date(),
             "menu": menu.id
@@ -60,23 +61,17 @@ class AuthenticatedMenuApiTests(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-
     def test_get_current_restaurant_menu(self):
-        restaurant = Restaurant.objects.create(
-            name="test restaurant name",
-            address="test address"
-        )
         dish = Dish.objects.create(title="soup 1")
         menu = Menu.objects.create()
         menu.dishes.add(dish)
         RestaurantMenu.objects.create(
-            restaurant=restaurant,
+            restaurant=self.restaurant,
             menu=menu,
             date=datetime.datetime.now().date(),
         )
 
-        url = reverse("service:get-current-menu", args=[restaurant.id])
+        url = reverse("service:get-current-menu", args=[self.restaurant.id])
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-

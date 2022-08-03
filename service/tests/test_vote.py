@@ -5,13 +5,12 @@ from django.test import TestCase
 
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+
 from rest_framework import status
 from rest_framework.test import APIClient
 
 from service.models import Restaurant, Dish, Menu, RestaurantMenu, Vote
-
-
-RESTAURANT_URL = reverse("service:restaurant-list")
+from service.tests.test_restaurant import RESTAURANT_URL
 
 
 def detail_url(task_id: int):
@@ -53,7 +52,6 @@ class AuthenticatedVoteApiTests(TestCase):
     def test_make_vote(self):
         url = reverse("service:vote-current-menu", args=[self.restaurant.id])
         payload = {"rate": 2}
-
         response = self.client.post(url, payload)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)

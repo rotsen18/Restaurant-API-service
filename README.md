@@ -31,6 +31,7 @@ set DEBUG=True
 ## Run with docker
 
 Docker should be installed
+Fill .env file with your credentials
 
 ```shell
 docker-compose build

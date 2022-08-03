@@ -24,7 +24,9 @@ class RestaurantViewSet(viewsets.ModelViewSet):
 
 
 class RestaurantCurrentMenuRetrieveView(APIView):
-    queryset = RestaurantMenu.objects.filter(date=datetime.datetime.now().date())
+    queryset = RestaurantMenu.objects.filter(
+        date=datetime.datetime.now().date()
+    )
 
     def get(self, request, pk):
         restaurant_menu_queryset = self.queryset.filter(restaurant__id=pk)
@@ -39,7 +41,9 @@ class RestaurantCurrentMenuRetrieveView(APIView):
 
 class RestaurantCurrentMenuVoteView(APIView):
     """Make vote"""
-    queryset = RestaurantMenu.objects.filter(date=datetime.datetime.now().date())
+    queryset = RestaurantMenu.objects.filter(
+        date=datetime.datetime.now().date()
+    )
     serializer_class = VoteSerializer
 
     def post(self, request, pk):
@@ -49,7 +53,10 @@ class RestaurantCurrentMenuVoteView(APIView):
             restaurant_menu = restaurant_menu_queryset.first()
 
             if serializer.is_valid():
-                serializer.save(restaurant_menu=restaurant_menu, user=request.user)
+                serializer.save(
+                    restaurant_menu=restaurant_menu,
+                    user=request.user
+                )
                 return Response(serializer.data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -57,7 +64,9 @@ class RestaurantCurrentMenuVoteView(APIView):
 
 class RestaurantCurrentMenuUploadView(APIView):
     """Set menu for restaurant"""
-    queryset = RestaurantMenu.objects.filter(date=datetime.datetime.now().date())
+    queryset = RestaurantMenu.objects.filter(
+        date=datetime.datetime.now().date()
+    )
     serializer_class = RestaurantMenuSerializer
 
     def post(self, request, pk):
@@ -88,7 +97,9 @@ class DishViewSet(viewsets.ModelViewSet):
 
 
 class RestaurantCurrentDayResultView(APIView):
-    queryset = RestaurantMenu.objects.filter(date=datetime.datetime.now().date())
+    queryset = RestaurantMenu.objects.filter(
+        date=datetime.datetime.now().date()
+    )
 
     def get(self, request, pk):
         restaurant_menu_queryset = self.queryset.filter(restaurant__id=pk)

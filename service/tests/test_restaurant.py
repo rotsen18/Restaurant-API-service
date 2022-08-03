@@ -32,29 +32,36 @@ class AuthenticatedRestaurantApiTests(TestCase):
             "test12345"
         )
         self.client.force_authenticate(self.user)
+        self.restaurant_payload = {
+            "name": "test restaurant name",
+            "address": "test address"
+        }
 
     def test_create_restaurant(self):
-        payload = {
-            "name": "test restaurant name",
-            "address": "test address"
-        }
-
-        response = self.client.post(RESTAURANT_URL, payload)
+        response = self.client.post(RESTAURANT_URL, self.restaurant_payload)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data["name"], payload["name"])
-        self.assertEqual(response.data["address"], payload["address"])
+        self.assertEqual(
+            response.data["name"],
+            self.restaurant_payload["name"]
+        )
+        self.assertEqual(
+            response.data["address"],
+            self.restaurant_payload["address"]
+        )
 
     def test_detail_restaurant(self):
-        payload = {
-            "name": "test restaurant name",
-            "address": "test address"
-        }
-        restaurant = Restaurant.objects.create(**payload)
-        url = detail_url(restaurant.id)
+        restaurant = Restaurant.objects.create(**self.restaurant_payload)
 
+        url = detail_url(restaurant.id)
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["name"], payload["name"])
-        self.assertEqual(response.data["address"], payload["address"])
+        self.assertEqual(
+            response.data["name"],
+            self.restaurant_payload["name"]
+        )
+        self.assertEqual(
+            response.data["address"],
+            self.restaurant_payload["address"]
+        )

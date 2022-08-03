@@ -38,7 +38,7 @@ urlpatterns = [
         RestaurantCurrentDayResultView.as_view(),
         name="current-day-result"
     ),
-path("", include(router.urls)),
+    path("", include(router.urls)),
 ]
 
 

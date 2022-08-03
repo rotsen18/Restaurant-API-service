@@ -41,8 +41,15 @@ class RestaurantMenu(models.Model):
 
 class Vote(models.Model):
     """Each vote is assigned to one RestaurantMenu item"""
-    restaurant_menu = models.ForeignKey(RestaurantMenu, on_delete=models.CASCADE, related_name="votes")
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    restaurant_menu = models.ForeignKey(
+        RestaurantMenu,
+        on_delete=models.CASCADE,
+        related_name="votes"
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
     rate = models.IntegerField(
         validators=[
             MinValueValidator(0),
